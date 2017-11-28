@@ -12171,7 +12171,7 @@ Sample 2 (index 85) establishment is retailers, as the 'grocery' value 92780 is 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Make a copy of the DataFrame, using the &#39;drop&#39; function to drop the given feature</span>
@@ -12204,7 +12204,7 @@ Sample 2 (index 85) establishment is retailers, as the 'grocery' value 92780 is 
 
 <span class="c1"># TODO: Report the score of the prediction using the testing set</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">label_column</span><span class="p">,</span> <span class="s1">&#39;prediction accuracy score:&#39;</span><span class="p">,</span> <span class="n">score</span>
+<span class="k">print</span> <span class="n">label_column</span><span class="p">,</span> <span class="s1">&#39;prediction R^2 score:&#39;</span><span class="p">,</span> <span class="n">score</span>
 </pre></div>
 
 </div>
@@ -12221,7 +12221,7 @@ Sample 2 (index 85) establishment is retailers, as the 'grocery' value 92780 is 
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Milk prediction accuracy score: 0.365725292736
+<pre>Milk prediction R^2 score: 0.365725292736
 </pre>
 </div>
 </div>
@@ -12258,7 +12258,8 @@ Milk <br/>
 <br/>
 <strong>Is this feature necessary for identifying customers' spending habits?</strong><br/>
 Yes, I think milk is part of grocery, so i expect in most cases/data both grocery and milk are correlated. <br/>
-<br/></p>
+<span style='background-color: yellow'>(Addition on reviewer request)</span><br/>
+0.365 is a low score, it is hard to predict 'Milk' using other features, therefore this feature has unique features and it is relevance to identify customer spending habits.<br/></p>
 
 </div>
 </div>
@@ -14113,7 +14114,8 @@ Yes, this confirms the relevance of the features I am looking at - Grocery -&gt;
 <br/></p>
 <p><strong>How is the data for those features distributed? </strong><br/>
 Hint: Is the data normally distributed? Where do most of the data points lie?<br/>
-The data is not normally distributed, most of the data points are close the first princple component, capturing the pattern of the data, at almost y = 1x <br/>
+<span style='background-color: yellow'>(Correction on reviewer request)</span><br/>
+The data is not normally distributed, most of the data points are skewed to the bottom right by the outliers.<br/>
 <br/></p>
 
 </div>
@@ -18293,7 +18295,7 @@ Once you have performed this implementation, the dataset will be stored in the v
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># For each feature find the data points with extreme high or low values</span>
@@ -18319,6 +18321,13 @@ Once you have performed this implementation, the dataset will be stored in the v
     <span class="k">print</span> <span class="s2">&quot;Data points considered outliers for the feature &#39;{}&#39;: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outlier_data</span><span class="p">))</span>
     <span class="n">display</span><span class="p">(</span><span class="n">log_data</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="n">step</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="n">step</span><span class="p">))])</span>
     
+<span class="c1"># which sample data point is outlier in not just one feature</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="n">outlier_counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">all_outlier_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">outlier_repeated</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span> <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">outlier_counter</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="s2">&quot;The outliers in more than one feature:&quot;</span><span class="p">,</span> <span class="n">outlier_repeated</span>
+<span class="c1"># [128, 154, 65, 66, 75]</span>
+
 <span class="c1"># OPTIONAL: Select the indices for data points you wish to remove</span>
 <span class="n">outliers</span>  <span class="o">=</span> <span class="p">[]</span>
 
@@ -19087,6 +19096,17 @@ Once you have performed this implementation, the dataset will be stored in the v
 </div>
 </div>
 
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The outliers in more than one feature: [128, 154, 65, 66, 75]
+</pre>
+</div>
 </div>
 
 </div>
@@ -24028,8 +24048,12 @@ bgAAAABJRU5ErkJggg==
 <p><strong>Answer:</strong></p>
 <p><strong>Are there any data points considered outliers for more than one feature based on the definition above? </strong>
 <br/>
-Yes, there are outliers on all 6 features &lt;/br/&gt;</p>
-<table>
+<span style='background-color: yellow'>(Correction on reviewer request)</span><br/>
+Yes, there were 5 data points which are outlier in more than one feature: <br/>
+128, 154, 65, 66, 75<br/></p>
+<p>(Old answer leave for ref only)<br/>
+There are outliers on all 6 features &lt;/br/&gt;</p>
+<p><table>
     <tr><th>Features</th><th>No of Outliers</th></tr>
     <tr><td>Fresh</td><td>16</td></tr>
     <tr><td>Milk</td><td>04</td></tr>
@@ -24038,7 +24062,9 @@ Yes, there are outliers on all 6 features &lt;/br/&gt;</p>
     <tr><td>Detergents_Paper</td><td>02</td></tr>
     <tr><td>Delicatessen</td><td>14</td></tr>
     <tr style='color:red'><td>Total</td><td>48</td></tr>
-</table><p><strong>Should these data points be removed from the dataset? </strong><br/>
+</table>
+<br/></p>
+<p><strong>Should these data points be removed from the dataset? </strong><br/>
 Yes, by removing the outliers the data will be less skewed, and data will be more normally distributed.
 <br/></p>
 <p><strong>If any data points were added to the outliers list to be removed, explain why</strong><br/>
@@ -24457,23 +24483,37 @@ Principal component 1st + 2nd + 3rd + 4th = Total<br/>
 0.4937 + 0.2319 + 0.1055 + 0.0970 = 0.9281<br/>
 <br/></p>
 <p><strong>Using the visualization provided above, discuss what the first four dimensions best represent in terms of customer spending.</strong><br/>
+<span style='background-color: yellow'>(Correction on reviewer request)</span><br/>
 <br/>
-1st principal component - dimension 1<br/>
-the highest feature weight just below 0.8 on Detergent_Paper, with Grocery and Milk just above 0.4 <br/>
-This group of customers most likely shop in retailer (supermarkets) and grocery store for all their needs.<br/>
-<br/>
-2nd principal component - dimension 2 <br/>
-the highest feature weight just above 0.6 on Frozen, with Fresh 0.6 and Delicatessen close to 0.5<br/>
-This group of customers likes fresh fruit and veg in markets, frozen food, also often eat at restaurants.<br/>
-<br/>
-3rd principal component - dimension 3<br/>
-the highest feature weight about 0.6 on Delicatessen, and negative feature weight about -0.7 on Fresh<br/>
-This group of customers dont eat fresh produce, it does not spend much on grocery either, they are probably a busy worker which dont have time to visit retailer (supermarkets). They probably always eat out, probably single / no children, with big disposable income.<br/>
-<br/>
-4th principal component - dimension 4<br/>
-the highest feature weight above 0.4 on Delicatessen, and negative feature weight close to 0.8 on Frozen <br/>
-This group of customers do not like to buy frozen food, spend little on grocery, not a fan of retailer (supermarkets), but spend high on restaurants and like fresh produce from local markets.<br/>
-<br/></p>
+1st principal component - dimension 1<br/></p>
+<ul>
+<li>the highest positive feature weight is Detergent_Paper just below 0.8, with Grocery and Milk just above 0.4 <br/>
+The customers shops a lot in retailer(supermarkets) and grocery store, will have high positive value in this feature/dimension.<br/></li>
+<li>the highest negative feature weight is Frozen just below -0.1<br/>
+There is no customer spending have a high negative value in this feature/dimension.<br/></li>
+</ul>
+<p>2nd principal component - dimension 2 <br/></p>
+<ul>
+<li>the highest positive feature weight is Frozen just above 0.6, with Fresh 0.6 and Delicatessen close to 0.5<br/>
+The customers likes fresh fruit and veg in markets, frozen food at supermarket/grocery, also often eat at restaurants, will have high value in this feature/dimension.<br/></li>
+<li>the highest negative feature weight is Detergent_Paper just below -0.05 <br/>
+There is no customer spending have a high negative value in this feature/dimension.<br/></li>
+</ul>
+<p>3rd principal component - dimension 3<br/></p>
+<ul>
+<li>the highest positive feature weight is Delicatessen about 0.6<br/>
+The busy city workers that dont have time to visit retailer (supermarkets), probably always eat out, also maybe single / no children, with big disposable income, will have high value in this feature/dimension.<br/></li>
+<li>the highest negative feature weight is Fresh at -0.7<br/>
+The customers shop fresh fruit and veg from local markets, and spending on grocery, will have a high negative value in this feature/dimension.<br/></li>
+</ul>
+<p>4th principal component - dimension 4<br/></p>
+<ul>
+<li>the highest positive feature weight is Delicatessen above 0.4<br/>
+The customers spend high on restaurants and like fresh produce from local markets, will have high value in this feature/dimension.<br/></li>
+<li>the highest negative feature weight is Frozen close to -0.8<br/>
+The customers spend loads of frozen food from grocery or supermarket, will have a high negative value in this feature/dimension.<br/>
+<br/></li>
+</ul>
 
 </div>
 </div>
@@ -24595,7 +24635,7 @@ This group of customers do not like to buy frozen food, spend little on grocery,
     <tr><td>No</td><td>sample index</td><td>max category value</td><td>establishment</td><td style='border-left:black 1px solid'>Dimension with highest log value</td><td>Dimension highest feature weight product</td><td style='font-weight:bold'>consistent?</td></tr>
     <tr><td>0</td><td>181</td><td>fresh=112151</td><td>markets</td><td style='border-left:black 1px solid'>2(4.4300)</td><td>2=Frozen</td><td style='background-color:pink'>No</td></tr>
     <tr><td>1</td><td>183</td><td>delicatessen=47943</td><td>restaurants</td><td style='border-left:black 1px solid'>2(5.3551)</td><td>2=Frozen</td><td style='background-color:pink'>No</td></tr>
-    <tr><td>2</td><td>85</td><td>grocery=92780</td><td>retailers</td><td style='border-left:black 1px solid'>1(5.5275)</td><td>1=Detergents_Paper</td><td style='background-color:pink'>No</td></tr>
+    <tr><td>2</td><td>85</td><td>grocery=92780</td><td>retailers(supermarkets)</td><td style='border-left:black 1px solid'>1(5.5275)</td><td>1=Detergents_Paper</td><td style='background-color:pink'>No</td></tr>
 </table>
 </DIV>
 </div>
@@ -26750,11 +26790,12 @@ AACA2iEQAgAAAFA7BEIAAAAAaodACAAAAEDt/H8P/+NjzMxghgAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p><strong>What set of establishments could each of the customer segments represent?</strong><br/>
-There are two clusters (customer segments).<br/></p>
+There are two clusters (customer segments).<br/>
+<span style='background-color: yellow'>(Correction on reviewer request)</span><br/></p>
 <p><table>
-    <tr><td>Cluster</td><td>Establishments</td></tr>
-    <tr><td>Segment 0</td><td>Grocery, Milk, Fresh</td></tr>
-    <tr><td>Segment 1</td><td>Fresh</td></tr>
+    <tr><td>Cluster</td><td>Product Category</td><td style='border-left: black 1px solid'>Establishments</td></tr>
+    <tr><td>Segment 0</td><td>Grocery, Milk, Fresh</td><td style='border-left: black 1px solid'>retailers(supermarkets)</td></tr>
+    <tr><td>Segment 1</td><td>Fresh</td><td style='border-left: black 1px solid'>markets</td></tr>
 </table>
 <br/>
 Segment 0 customers have a lot more spending power then Segment 1<br/>
@@ -26818,27 +26859,29 @@ Sample point 2 predicted to be in Cluster 0
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p><strong>For each sample point, which customer segment from Question 8 best represents it?</strong><br/></p>
+<p><strong>For each sample point, which customer segment from Question 8 best represents it?</strong><br/>
+<span style='background-color: yellow'>(Correction on reviewer request)</span><br/></p>
 <p><table>
-    <tr><td>Sample point</td><td>index</td><td>cluster (customer segment)</td></tr>
-    <tr><td>0</td><td>181</td><td>0</td></tr>
-    <tr><td>1</td><td>183</td><td>0</td></tr>
-    <tr><td>2</td><td>85</td><td>0</td></tr>
+    <tr><td>Sample point</td><td>index</td><td>Cluster (customer segment)</td><td style='border-left: black 1px solid'>Establishments</td></tr>
+    <tr><td>0</td><td>181</td><td>0</td><td style='border-left: black 1px solid'>retailers(supermarkets)</td></tr>
+    <tr><td>1</td><td>183</td><td>0</td><td style='border-left: black 1px solid'>retailers(supermarkets)</td></tr>
+    <tr><td>2</td><td>85</td><td>0</td><td style='border-left: black 1px solid'>retailers(supermarkets)</td></tr>
 </table>
 <br/></p>
-<p>All 3 samples i selected in Question 1 are in Cluster 0<br/></p>
+<p>All 3 samples i selected in Question 1 are in Cluster 0, the establishment is supermarkets.<br/></p>
 <p><strong>Are the predictions for each sample point consistent with this?*</strong><br/></p>
-<p>from Question 1<br/></p>
+<p>ref Question 1<br/></p>
 <p><table>
     <tr><td>Sample point</td><td>index</td><td>column</td><td>establishment</td><td style='border-left:black 1px solid'>consistent with cluster?</td></tr>
     <tr><td>0</td><td>181</td><td>fresh=112151</td><td>markets</td><td style='border-left:black 1px solid; background-color: #93FF93'>Yes (Segment 0 'Fresh' have a high value)</td></tr>
     <tr><td>1</td><td>183</td><td>delicatessen=47943</td><td>restaurants</td><td style='border-left:black 1px solid; background-color: pink'>No - Segment 0 'Delicatessen' have low value 1186.0</td></tr>
-    <tr><td>2</td><td>85</td><td>grocery=92780</td><td>retailers</td><td style='border-left:black 1px solid; background-color: #93FF93'>Yes (Segment 0 'Grocery' have a high value)</td></tr>
+    <tr><td>2</td><td>85</td><td>grocery=92780</td><td>retailers(supermarkets)</td><td style='border-left:black 1px solid; background-color: #93FF93'>Yes (Segment 0 'Grocery' have a high value)</td></tr>
 </table>
 <br/></p>
 <p><div style='font-style: italic'>Analysis</div>
 I think sample index 183 inconsistent might be caused by the number of clusters i have selected: 2<br/>
-Given a higher number of clusters, there should be a new customer segment that have a high value of Delicatessen, and low value on other product categories.<br/></p>
+Given a higher number of clusters, there should be a new customer segment that have a high value of Delicatessen, and low value on other product categories.<br/>
+Or maybe the Delicatessen is actually bought from supermarkets (serves hot/cooked food) instead of restaurants.</p>
 
 </div>
 </div>
